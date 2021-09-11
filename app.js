@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 mongoose.connect(
-  "mongodb+srv://root:root@cluster0.og1r5.mongodb.net/mainDB?retryWrites=true&w=majority",
+  env,
   { useNewUrlParser: true }
 );
 connection.on("error", (err) => {
