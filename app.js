@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const api = require("./api/v1/index");
@@ -30,10 +31,7 @@ app.use((req, res, next) => {
   res.status(404).json({ msg: "404 - Not Found", err: err });
 });
 
-mongoose.connect(
-  "mongodb+srv://root:root@cluster0.og1r5.mongodb.net/mainDB?retryWrites=true&w=majority",
-  { useNewUrlParser: true }
-);
+mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true });
 connection.on("error", (err) => {
   console.error(`connection to MongoDB error : ${err.message}`);
 });
