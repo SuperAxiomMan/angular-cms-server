@@ -48,7 +48,8 @@ router.post("/blog-posts", (req, res) => {
 
 //->ReadAll
 router.get("/blog-posts", (req, res) => {
-  blogPostModel.find()
+  blogPostModel
+    .find()
     .sort({ createdOn: -1 })
     .exec()
     .then((posts) => {
@@ -63,7 +64,8 @@ router.get("/blog-posts", (req, res) => {
 });
 //->ReadOne
 router.get("/blog-posts/:id", (req, res) => {
-  blogPostModel.findById(req.params.id)
+  blogPostModel
+    .findById(req.params.id)
     .then((post) => {
       res.status(200).json(post);
     })
@@ -76,22 +78,31 @@ router.get("/blog-posts/:id", (req, res) => {
 });
 
 //->Update
-router.put("/blog-posts/:id", upload.single('blogImage'), (req, res) => {
-    const id = req.params.id;
-    const conditions = { _id: id };
-    const blogPost = { ...req.body, image: lastUploadedImageName };
-    const update = { $set: blogPost };
-    const options = {
-      upsert: true,
-      new: true,
-    };
-    blogPostModel.findOneAndUpdate(conditions, update, options, (err,response) => {
+router.put("/blog-posts/:id", upload.single("blogImage"), (req, res) => {
+  const id = req.params.id;
+  const conditions = { _id: id };
+  const blogPost = { ...req.body, image: lastUploadedImageName };
+  const update = { $set: blogPost };
+  const options = {
+    upsert: true,
+    new: true,
+  };
+  blogPostModel.findOneAndUpdate(
+    conditions,
+    update,
+    options,
+    (err, response) => {
       return err
         ? res.status(500).json({ msg: "API : updated failed", error: err })
-        : res.status(200).json({ msg: `API : document with id ${id} updated` , response: response })
-    });
-  });
-
+        : res
+            .status(200)
+            .json({
+              msg: `API : document with id ${id} updated`,
+              response: response,
+            });
+    }
+  );
+});
 
 //->Delete One
 router.delete("/blog-posts/:id", (req, res) => {
@@ -121,7 +132,5 @@ router.delete("/blog-posts", (req, res) => {
       : res.status(202).json({ msg: `posts with id ${idsArray} deleted` });
   });
 });
-
-
 
 module.exports = router;
