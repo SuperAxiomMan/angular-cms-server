@@ -42,7 +42,6 @@ router.get("/blog-posts/:id", (req, res) => {
     });
 });
 
-
 //->Create Post
 router.post("/blog-posts", (req, res) => {
   console.log("req.body", req.body);
@@ -69,8 +68,6 @@ router.post("/blog-posts", (req, res) => {
     return err ? res.status(500).json(err) : res.status(201).json(blogPost);
   });
 });
-
-
 
 //->Delete One
 router.delete("/blog-posts/:id", (req, res) => {
@@ -126,8 +123,6 @@ router.post("/blog-posts/images", upload.single("blogImage"), (req, res) => {
     : res.status(201).send({ filename: req.file.filename, file: req.file });
 });
 
-
-
 //->Update
 router.put("/blog-posts/:id", upload.single("blogImage"), (req, res) => {
   const id = req.params.id;
@@ -152,6 +147,5 @@ router.put("/blog-posts/:id", upload.single("blogImage"), (req, res) => {
     }
   );
 });
-
 
 module.exports = router;
