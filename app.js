@@ -51,7 +51,12 @@ passport.use(
     (name, pwd, cb) => {
       User.findOne({ username: name }, (err, user) => {
         if (err) {
-          console.error(`could not find ${name} in MongoDB`, err);
+          console.error("error while login : ", err);
+          return cb(null, false);
+        }
+        if (user == null) {
+          console.error(`${name} not present in the DB`);
+          return cb(null, false);
         }
         if (user.password !== pwd) {
           console.error(`wrong password for ${name}`);
