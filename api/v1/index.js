@@ -71,6 +71,9 @@ router.post("/blog-posts", (req, res) => {
 
 //->Delete One
 router.delete("/blog-posts/:id", (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ msg: "action not authorized" });
+  }
   blogPostModel.findByIdAndDelete(req.params.id, (err, post) => {
     return err
       ? res.status(500).json(err)
@@ -80,6 +83,9 @@ router.delete("/blog-posts/:id", (req, res) => {
 
 //->Delete Multi
 router.delete("/blog-posts", (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ msg: "action not authorized" });
+  }
   const ids = req.query.ids;
   const idsArray = ids.split(",").map((id) => {
     return id.match(/^[0-9a-zA-Z]{24}$/)

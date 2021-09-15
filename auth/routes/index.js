@@ -7,7 +7,9 @@ router.post("/register", (req, res) => {
   console.log("user>>>", req.body);
   const newUser = new userModel(req.body);
   newUser.save((err, user) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+      return res.status(500).json(err);
+    }
     req.login(req.body, (err) => {
       if (err) console.log("error during the registration : req.logIn()", err);
       res.status(201).json(user);
@@ -24,11 +26,18 @@ router.post(
 );
 
 router.get("/success", (req, res) => {
+  console.log("sucessfully logged in");
   res.status(200).json({ msg: "logged in", user: req.user });
 });
 
 router.get("/failure", (req, res) => {
   res.status(401).json({ msg: "not logged in!!", user: req.user });
+});
+
+router.get("/logout", (req, res) => {
+  req.logout();
+  console.log("sucessfully logged out");
+  res.status(200).json({ msg: "sucessfully logged out" });
 });
 
 module.exports = router;
